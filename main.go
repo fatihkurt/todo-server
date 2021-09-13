@@ -9,7 +9,7 @@ import (
 func main() {
 	conn.ConnectDb()
 	router := setupRouter()
-	err := endless.ListenAndServe(":8080", router)
+	err := endless.ListenAndServe(":5000", router)
 
 	if err != nil {
 		panic(err)

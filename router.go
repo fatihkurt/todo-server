@@ -57,6 +57,6 @@ func setupRouter() *gin.Engine {
 		})
 	}
 
-	router.Run(":8080")
+	router.Run(":5000")
 	return router
 }
