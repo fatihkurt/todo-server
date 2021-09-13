@@ -24,8 +24,8 @@ func TestTaskListRoute(t *testing.T) {
 
 func TestAddTaskRoute(t *testing.T) {
 	task := Task{
-		Name: "Test task",
-		Done: false,
+		Name:   "Test task",
+		UserId: 1,
 	}
 
 	var addedTask []byte
