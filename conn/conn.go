@@ -15,7 +15,7 @@ var (
 
 func ConnectDb() {
 	var err error
-	db, err := sql.Open("mysql", "newuser:password@/todo")
+	db, err := sql.Open("mysql", "root:password@/todo")
 	if err != nil {
 		panic(err)
 	}
