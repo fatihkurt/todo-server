@@ -57,6 +57,5 @@ func setupRouter() *gin.Engine {
 		})
 	}
 
-	router.Run(":5000")
 	return router
 }
