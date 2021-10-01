@@ -1,14 +1,15 @@
 package main
 
 import (
-	"todoapp/todo-server/conn"
+	"todoapp/todo-server/db"
+	"todoapp/todo-server/server"
 
 	"github.com/fvbock/endless"
 )
 
 func main() {
-	conn.ConnectDb()
-	router := setupRouter()
+	db.ConnectDb()
+	router := server.SetupRouter()
 	err := endless.ListenAndServe(":5000", router)
 
 	if err != nil {

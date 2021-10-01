@@ -12,12 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
-	"todoapp/todo-server/conn"
+	. "todoapp/todo-server/db"
+	"todoapp/todo-server/model"
+	"todoapp/todo-server/server"
 )
 
 func TestTaskListRoute(t *testing.T) {
-	conn.ConnectDb()
-	router := setupRouter()
+	ConnectDb()
+	router := server.SetupRouter()
 
 	w := performRequest(router, "GET", "/api/task?userId=1", nil)
 
@@ -25,11 +27,11 @@ func TestTaskListRoute(t *testing.T) {
 }
 
 func TestAddTaskRoute(t *testing.T) {
-	conn.ConnectDb()
-	clearTable(conn.Db)
-	router := setupRouter()
+	ConnectDb()
+	clearTable(Db)
+	router := server.SetupRouter()
 
-	task := AddTaskRequest{
+	task := model.AddTaskRequest{
 		Name:   "Test task",
 		UserId: 1,
 	}
@@ -44,7 +46,7 @@ func TestAddTaskRoute(t *testing.T) {
 
 	// expected data
 	response := gin.H{
-		"message": Task{
+		"message": model.Task{
 			Id:     1,
 			UserId: 1,
 			Name:   "Test task",
@@ -69,7 +71,7 @@ func performRequest(r http.Handler, method, path string, body []byte) *httptest.
 }
 
 func clearTable(db *sql.DB) {
-	_, err := conn.Db.Exec("TRUNCATE table task")
+	_, err := Db.Exec("TRUNCATE table task")
 
 	if err != nil {
 		fmt.Println(err)

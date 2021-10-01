@@ -1,12 +1,13 @@
-package main
+package server
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/gin-contrib/cors"
+
+	"todoapp/todo-server/handler"
 )
 
 type Response struct {
@@ -16,7 +17,7 @@ type Response struct {
 
 var router *gin.Engine
 
-func setupRouter() *gin.Engine {
+func SetupRouter() *gin.Engine {
 	router = gin.Default()
 
 	router.Use(cors.New(cors.Config{
@@ -35,25 +36,13 @@ func setupRouter() *gin.Engine {
 	group := router.Group("/api")
 	{
 		group.GET("/task", func(c *gin.Context) {
-			result, err := listTasks(c)
-
-			if err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
-				return
-			}
-
-			c.JSON(http.StatusOK, gin.H{"message": result})
+			h := handler.NewTaskHandler(c)
+			h.HandleTaskList()
 		})
 
 		group.POST("/task", func(c *gin.Context) {
-			result, err := addTask(c)
-
-			if err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
-				return
-			}
-
-			c.JSON(http.StatusOK, gin.H{"message": result})
+			h := handler.NewTaskHandler(c)
+			h.HandleTaskAdd()
 		})
 	}
 
