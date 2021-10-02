@@ -59,6 +59,16 @@ func (h *TaskHandler) HandleTaskAdd() {
 		return
 	}
 
+	if task.UserId == 0 {
+		service.ErrorResponse(h.Context, errors.New("user id not provided"))
+		return
+	}
+
+	if task.Name == "" {
+		service.ErrorResponse(h.Context, errors.New("task not provided"))
+		return
+	}
+
 	addedTask, err := service.AddTask(task)
 	if err != nil {
 		service.ErrorResponse(h.Context, err)
