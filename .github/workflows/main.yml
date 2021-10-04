@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build container image
-      run: docker build -t registry.digitalocean.com/asb/static-example:$(echo $GITHUB_SHA | head -c7) .
+      run: docker build -t fthkurt/go-api .
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
@@ -36,7 +36,7 @@ jobs:
       run: doctl registry login --expiry-seconds 600
 
     - name: Push image to DigitalOcean Container Registry
-      run: docker push registry.digitalocean.com/asb/static-example:$(echo $GITHUB_SHA | head -c7)
+      run: docker push fthkurt/go-api
 
     - name: Update deployment file
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/asb/static-example:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
@@ -46,6 +46,9 @@ jobs:
 
     - name: Deploy to DigitalOcean Kubernetes
       run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+    
+    - name: Ensure deployment
+      run: kubectl rollout restart deployment/go-api
 
     - name: Verify deployment
       run: kubectl rollout status deployment/static-example
