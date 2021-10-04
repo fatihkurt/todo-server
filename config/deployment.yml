@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: go-api
+  template:
+    metadata:
+      labels:
+        name: go-api
+    spec:
+      containers:
+      - name: application
+        image: fthkurt/go-api
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 5000
+        env:
+          - name: MYSQL_HOST
+            value: 10.245.200.15
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: password
+          

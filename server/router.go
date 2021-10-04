@@ -30,7 +30,7 @@ func SetupRouter() *gin.Engine {
 	}))
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(200, "Server running")
+		c.String(200, "Server running.")
 	})
 
 	group := router.Group("/api")
