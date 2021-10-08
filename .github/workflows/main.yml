@@ -24,6 +24,12 @@ jobs:
     - name: Checkout main
       uses: actions/checkout@v2
 
+    - name: Build test container image
+      run: docker build build -f Dockerfile.test -t fthkurt/go-api .
+    
+    - name: Push image to DigitalOcean Container Registry
+      run: docker push fthkurt/go-api-test:latest
+
     - name: Build container image
       run: docker build -t fthkurt/go-api .
 
